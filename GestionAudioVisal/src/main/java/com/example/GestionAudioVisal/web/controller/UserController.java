@@ -26,6 +26,7 @@ UserService userService;
     JWTAuthenticationConfig jwtAuthenticationConfig;
 
     @Operation(summary="Register a user into application given permissions")
+    @CrossOrigin(origins ="http://127.0.0.1:5500")
     @PostMapping("/login") //Este es para el login con el token y que permita ver las consultas
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
@@ -47,5 +48,26 @@ UserService userService;
         return userService.findAll();
     }
 
+
+
+
+    @Operation(summary="Get user by ID")
+    @GetMapping("/users/{id}")
+    public User getUserById(@PathVariable int id) {
+        return userService.findById(id);
+    }
+
+    @Operation(summary="Update user")
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable int id, @RequestBody User user) {
+        user.setIdUser(id);
+        return userService.update(user);
+    }
+
+    @Operation(summary="Delete user")
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id) {
+        userService.delete(id);
+    }
 
 }
